@@ -19,4 +19,7 @@ public class StudentService {
     public List<Student> getAllStudents() {
         return repo.findAll();
     }
+    public void deleteStudentById(int id) {
+        repo.deleteById(id);
+    }
 }

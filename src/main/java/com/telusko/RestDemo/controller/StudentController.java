@@ -6,6 +6,8 @@ import org.springframework.web.bind.annotation.*;
 import com.telusko.RestDemo.model.Student;
 import com.telusko.RestDemo.service.StudentService;
 
+import jakarta.websocket.server.PathParam;
+
 @RestController
 @RequestMapping("/students")
 public class StudentController {
@@ -20,6 +22,12 @@ public class StudentController {
 
     @GetMapping
     public List<Student> getStudents() {
+        return service.getAllStudents();
+    }
+
+    @DeleteMapping("/{id}")
+    public List<Student> deleteStudents(@PathVariable int id) {
+        service.deleteStudentById(id);
         return service.getAllStudents();
     }
 }
