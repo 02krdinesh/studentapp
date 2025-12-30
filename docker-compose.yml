@@ -7,8 +7,6 @@ services:
       - "80:8081"
     environment:
       SPRING_DATASOURCE_URL: jdbc:mysql://dineshdb.cb2m6c8i2qpk.eu-north-1.rds.amazonaws.com:3306/studentdb
-      SPRING_DATASOURCE_USERNAME: ${DB_USERNAME}
-      SPRING_DATASOURCE_PASSWORD: ${DB_PASSWORD}
       SPRING_JPA_HIBERNATE_DDL_AUTO: update
     networks:
       - app-network
