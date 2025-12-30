@@ -24,14 +24,18 @@ jobs:
       - name: Build Docker image
         run: docker build -t myapp:latest .
 
-      - name: Push Docker image to EC2
-        uses: appleboy/ssh-action@v0.1.6
+      - name: Deploy to EC2
+        uses: appleboy/ssh-action@v0.1.7
         with:
           host: ${{ secrets.AWSCICDHOST }}
           username: ${{ secrets.AWSCICDUSERNAME }}
-          key: ${{ secrets.AWSCICDSECRETKEY}}
+          key: ${{ secrets.AWSCICDSECRETKEY }}
           script: |
             docker stop myapp || true
             docker rm myapp || true
             docker rmi myapp:latest || true
-            docker run -d --name myapp -p 80:8081 myapp:latest
+            docker run -d --name myapp -p 80:8081 \
+              -e SPRING_DATASOURCE_URL=${{ dineshdb.cb2m6c8i2qpk.eu-north-1.rds.amazonaws.com }} \
+              -e SPRING_DATASOURCE_USERNAME=${{ root }} \
+              -e SPRING_DATASOURCE_PASSWORD=${{ dinesh12 }} \
+              myapp:latest
