@@ -7,9 +7,12 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
+
     steps:
+      # Step 1: Checkout your repository
       - uses: actions/checkout@v4
 
+      # Step 2: Setup SSH for EC2 connection
       - name: Setup SSH
         run: |
           mkdir -p ~/.ssh
@@ -17,5 +20,19 @@ jobs:
           chmod 600 ~/.ssh/id_ed25519
           ssh-keyscan 13.61.7.231 >> ~/.ssh/known_hosts
 
+      # Step 3: Test EC2 connection (optional)
       - name: Test EC2 connection
-        run: ssh ec2-user@13.61.7.231 "hostname"
+        run: ssh -i ~/.ssh/id_ed25519 ec2-user@13.61.7.231 "hostname"
+
+      # Step 4: Deploy Docker container to EC2
+      - name: Deploy Docker container to EC2
+        run: |
+          # Copy project files to EC2
+          scp -i ~/.ssh/id_ed25519 -r ./ ec2-user@13.61.7.231:/home/ec2-user/studentapp/
+          
+          # Connect to EC2, rebuild Docker image, and restart container
+          ssh -i ~/.ssh/id_ed25519 ec2-user@13.61.7.231 "
+            cd /home/ec2-user/studentapp &&
+            docker-compose down &&
+            docker-compose up -d --build
+          "
