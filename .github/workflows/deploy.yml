@@ -27,9 +27,12 @@ jobs:
       # Step 4: Deploy Docker container to EC2
       - name: Deploy Docker container to EC2
         run: |
-          # Copy project files to EC2
-          scp -i ~/.ssh/id_ed25519 -r ./ ec2-user@13.61.7.231:/home/ec2-user/studentapp/
-          
+          # Install rsync on runner if not installed
+          sudo apt-get update && sudo apt-get install -y rsync
+
+          # Copy project files to EC2, excluding .git
+          rsync -av --exclude='.git' -e "ssh -i ~/.ssh/id_ed25519 -o StrictHostKeyChecking=no" ./ ec2-user@13.61.7.231:/home/ec2-user/studentapp/
+
           # Connect to EC2, rebuild Docker image, and restart container
           ssh -i ~/.ssh/id_ed25519 ec2-user@13.61.7.231 "
             cd /home/ec2-user/studentapp &&
