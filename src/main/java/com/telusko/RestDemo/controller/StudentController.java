@@ -29,6 +29,11 @@ public class StudentController {
     public List<Student> deleteStudents(@PathVariable int id) {
         service.deleteStudentById(id);
         System.out.println(id);
-        return service.getAllStudents();
+        List<Student> list = service.getAllStudents();
+        Student st1 = new Student();
+        st1.setName("updated");
+        st1.setAge(2026);
+        list.add(st1);
+        return list;
     }
 }
