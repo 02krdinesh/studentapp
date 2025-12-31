@@ -28,6 +28,7 @@ public class StudentController {
     @DeleteMapping("/{id}")
     public List<Student> deleteStudents(@PathVariable int id) {
         service.deleteStudentById(id);
+        System.out.println(id);
         return service.getAllStudents();
     }
 }
