@@ -21,7 +21,12 @@ public class StudentController {
 
     @GetMapping
     public List<Student> getStudents() {
-        return service.getAllStudents();
+        List<Student> list = service.getAllStudents();
+        Student st1 = new Student();
+        st1.setName("updated");
+        st1.setAge(2026);
+        list.add(st1);
+        return list;
     }
 
     @DeleteMapping("/{id}")
