@@ -24,7 +24,7 @@ public class StudentController {
         List<Student> list = service.getAllStudents();
         Student st1 = new Student();
         st1.setName("updated");
-        st1.setAge(010126);
+        st1.setAge(1126);
         list.add(st1);
         return list;
     }
